@@ -81,7 +81,7 @@ class Profile(ViewSet):
             }
         """
         try:
-            current_user = Customer.objects.get(user=4)
+            current_user = Customer.objects.get(user=request.auth.user)
             current_user.recommends = Recommendation.objects.filter(recommender=current_user)
 
             serializer = ProfileSerializer(
@@ -343,7 +343,7 @@ class CustomerSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Customer
-        fields = ('id', 'user',)
+        fields = ('id', 'user')
 
 
 class ProfileProductSerializer(serializers.ModelSerializer):
