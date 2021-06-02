@@ -247,6 +247,7 @@ class Products(ViewSet):
         # Support filtering by category and/or quantity
         category = self.request.query_params.get('category', None)
         quantity = self.request.query_params.get('quantity', None)
+        price = self.request.query_params.get('price', None)
         order = self.request.query_params.get('order_by', None)
         direction = self.request.query_params.get('direction', None)
         number_sold = self.request.query_params.get('number_sold', None)
@@ -265,6 +266,9 @@ class Products(ViewSet):
 
         if quantity is not None:
             products = products.order_by("-created_date")[:int(quantity)]
+
+        if price is not None:
+            products = products.order_by("price")[:int(price)]
 
         if number_sold is not None:
             def sold_filter(product):
