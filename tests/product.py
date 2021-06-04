@@ -2,6 +2,8 @@ import json
 import datetime
 from rest_framework import status
 from rest_framework.test import APITestCase
+from bangazonapi.models import Product
+
 
 
 class ProductTests(APITestCase):
@@ -98,3 +100,29 @@ class ProductTests(APITestCase):
     # TODO: Delete product
 
     # TODO: Product can be rated. Assert average rating exists.
+
+    def test_delete_products(self):
+        """
+        Ensure we can delete a product.
+        """
+        # product = Product()
+        # product.name = "Durango"
+        # product.customer_id = 6
+        # product.price = 541.17
+        # product.description = "1998 Dodge"
+        # product.quantity = 2
+        # product.created_date = "2019-05-16"
+        # product.category_id = 2,
+        # product.location = "Górki Wielkie",
+        # product.image_path = ""
+        # product.save()
+
+        self.test_create_product()
+
+        self.client.credentials(HTTP_AUTHORIZATION='Token ' + self.token)
+        response = self.client.delete(f"/products/1")
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+
+        # GET GAME AGAIN TO VERIFY 404 response
+        response = self.client.get(f"/products/1")
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
